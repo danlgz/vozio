@@ -1,0 +1,9 @@
+# Postgres
+POSTGRES_USER=postgres
+POSTGRES_PASSWORD=postgres
+POSTGRES_HOST=db
+POSTGRES_DB=vozio_dev
+POSTGRES_POOL_SIZE=10
+
+# Elixir
+MIX_ENV=dev

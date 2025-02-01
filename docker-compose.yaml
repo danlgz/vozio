@@ -1,0 +1,33 @@
+services:
+  db:
+    image: postgres:17.2
+    container_name: vozio_db
+    env_file:
+      - .env/local
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+  app:
+    env_file:
+      - .env/local
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: vozio_app
+    ports:
+      - "4000:4000"
+    volumes:
+      - .:/app
+    depends_on:
+      db:
+        condition: service_started
+    command: ["mix", "phx.server"]
+
+volumes:
+  db_data:
