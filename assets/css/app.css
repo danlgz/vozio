@@ -31,3 +31,7 @@ button {
 a {
     @apply hover:underline hover:text-vozio-primary;
 }
+
+input:focus~label {
+    @apply text-vozio-primary bg-vozio-primary;
+}

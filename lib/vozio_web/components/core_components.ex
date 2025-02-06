@@ -410,17 +410,21 @@ defmodule VozioWeb.CoreComponents do
   # All other inputs text, datetime-local, url, password, etc. are handled here...
   def input(assigns) do
     ~H"""
-    <div>
-      <.label for={@id}>{@label}</.label>
+    <div class="group">
+      <.label for={@id} has_error={length(@errors) > 0}>
+        {@label}
+      </.label>
       <input
         type={@type}
         name={@name}
         id={@id}
         value={Phoenix.HTML.Form.normalize_value(@type, @value)}
         class={[
-          "mt-1 block w-full rounded-lg text-zinc-900 focus:ring-0 sm:text-sm sm:leading-4",
-          @errors == [] && "border-zinc-300 focus:border-zinc-400",
-          @errors != [] && "border-rose-400 focus:border-rose-400"
+          "border-[3px] mt-1 block w-full rounded-lg text-vozio-text-light focus:ring-0 sm:text-sm sm:leading-4",
+          @errors == [] &&
+            "border-vozio-border-light dark:border-vozio-border-dark dark:border-vozio-light focus:border-vozio-primary",
+          @errors != [] &&
+            "border-vozio-error-light dark:border-vozio-error-dark focus:border-vozio-error-light focus:dark:border-vozio-error-dark"
         ]}
         {@rest}
       />
@@ -433,11 +437,20 @@ defmodule VozioWeb.CoreComponents do
   Renders a label.
   """
   attr :for, :string, default: nil
+  attr :has_error, :boolean, default: false
   slot :inner_block, required: true
 
   def label(assigns) do
     ~H"""
-    <label for={@for} class="block text-sm font-semibold leading-4 ">
+    <label
+      for={@for}
+      class={[
+        "block text-sm leading-4 ml-2",
+        "text-vozio-text-light dark:text-vozio-text-dark",
+        "group-focus-within:text-vozio-primary",
+        @has_error && "!text-vozio-error-light !dark:text-vozio-error-dark"
+      ]}
+    >
       {render_slot(@inner_block)}
     </label>
     """
@@ -450,8 +463,8 @@ defmodule VozioWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <div class="flex items-center mt-1 flex gap-2 text-sm leading-4 text-vozio-error-light dark:text-vozio-error-dark">
-      <.icon name="hero-exclamation-circle-mini" class="mt-0.5 h-5 w-5 flex-none" />
+    <div class="flex items-center mt-2 flex gap-1 text-sm leading-4 text-vozio-error-light dark:text-vozio-error-dark">
+      <.icon name="hero-exclamation-circle-mini" class="h-4 w-4" />
       {render_slot(@inner_block)}
     </div>
     """
