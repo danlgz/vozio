@@ -7,6 +7,8 @@
 # General application configuration
 import Config
 
+config :vozio, Vozio.Mailer, adapter: Swoosh.Adapters.Local
+
 config :vozio,
   ecto_repos: [Vozio.Repo],
   generators: [timestamp_type: :utc_datetime]

@@ -1,6 +1,6 @@
 FROM elixir:1.18-alpine as build
 
-RUN apk add --no-cache git
+RUN apk add --no-cache git make gcc musl-dev
 
 RUN mix local.hex --force && \
     mix local.rebar --force
