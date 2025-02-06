@@ -8,7 +8,10 @@ defmodule VozioWeb.UserLoginLive do
         Log in to account
         <:subtitle>
           Don't have an account?
-          <.link navigate={~p"/users/register"} class="font-semibold text-brand hover:underline">
+          <.link
+            navigate={~p"/users/register"}
+            class="font-semibold text-vozio-primary hover:underline"
+          >
             Sign up
           </.link>
           for an account now.
@@ -26,9 +29,11 @@ defmodule VozioWeb.UserLoginLive do
           </.link>
         </:actions>
         <:actions>
-          <.button phx-disable-with="Logging in..." class="w-full">
-            Log in <span aria-hidden="true">→</span>
-          </.button>
+          <div class="flex justify-center w-full">
+            <.button phx-disable-with="Logging in...">
+              Log in
+            </.button>
+          </div>
         </:actions>
       </.simple_form>
     </div>

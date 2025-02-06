@@ -11,7 +11,7 @@ defmodule VozioWeb.UserRegistrationLive do
         Register for an account
         <:subtitle>
           Already registered?
-          <.link navigate={~p"/users/log_in"} class="font-semibold text-brand hover:underline">
+          <.link navigate={~p"/users/log_in"} class="font-semibold text-vozio-primary hover:underline">
             Log in
           </.link>
           to your account now.
@@ -31,11 +31,14 @@ defmodule VozioWeb.UserRegistrationLive do
           Oops, something went wrong! Please check the errors below.
         </.error>
 
+        <.input field={@form[:username]} type="text" label="Username" required />
         <.input field={@form[:email]} type="email" label="Email" required />
         <.input field={@form[:password]} type="password" label="Password" required />
 
         <:actions>
-          <.button phx-disable-with="Creating account..." class="w-full">Create an account</.button>
+          <div class="flex justify-center w-full">
+            <.button phx-disable-with="Creating account...">Create an account</.button>
+          </div>
         </:actions>
       </.simple_form>
     </div>
