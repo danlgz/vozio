@@ -50,7 +50,7 @@
       barThickness: 3,
       barColors: {
         0: "rgba(26,  188, 156, .9)",
-        ".25": "rgba(52,  152, 219, .9)",
+        ".25": "rgb(61, 135, 161)",
         ".50": "rgba(241, 196, 15,  .9)",
         ".75": "rgba(230, 126, 34,  .9)",
         "1.0": "rgba(211, 84,  0,   .9)",
@@ -101,7 +101,7 @@
         if (delay) {
           if (delayTimerId) return;
           delayTimerId = setTimeout(() => topbar.show(), delay);
-        } else  {
+        } else {
           showing = true;
           if (fadeTimerId !== null) window.cancelAnimationFrame(fadeTimerId);
           if (!canvas) createCanvas();

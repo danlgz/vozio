@@ -27,30 +27,34 @@ defmodule VozioWeb.UserSettingsLive do
     ~H"""
     <.header class="text-center">
       Account Settings
-      <:subtitle>Manage your account email address and password settings</:subtitle>
+      <:subtitle>Manage your account information, email address, password settings</:subtitle>
     </.header>
 
-    <div class="mb-8">
-      <nav class="flex space-x-4" aria-label="Settings tabs">
+    <div class="flex gap-16 mt-16 mx-auto max-w-screen-lg">
+      <nav class="flex flex-col gap-4" aria-label="Settings tabs">
         <.link
           :for={tab <- @tabs}
           navigate={tab.navigate}
           class={[
-            "px-3 py-2 rounded-md text-zinc-500 hover:text-zinc-900",
-            @current_tab == tab.key && "bg-zinc-100 text-zinc-900"
+            "px-6 py-4 rounded-full hover:bg-vozio-primary/30 text-center",
+            "text-vozio-text-light dark:text-vozio-text-dark",
+            @current_tab == tab.key && "bg-vozio-primary/30"
           ]}
         >
           {tab.title}
         </.link>
       </nav>
-    </div>
 
-    <div class="space-y-12 divide-y">
-      <%= if @current_tab == "info" do %>
-        info
-      <% end %>
-      <%= if @current_tab == "email" do %>
-        <div>
+      <div class={[
+        "flex-1 flex flex-col gap-4 w-full p-8 rounded-lg border",
+        "bg-vozio-surface-light border-vozio-border-light",
+        "dark:bg-vozio-surface-dark dark:border-vozio-border-dark"
+      ]}>
+        <%= if @current_tab == "info" do %>
+          <h2>Account Information</h2>
+        <% end %>
+        <%= if @current_tab == "email" do %>
+          <h2>Change your email</h2>
           <.simple_form
             for={@email_form}
             id="email_form"
@@ -71,11 +75,10 @@ defmodule VozioWeb.UserSettingsLive do
               <.button phx-disable-with="Changing...">Change Email</.button>
             </:actions>
           </.simple_form>
-        </div>
-      <% end %>
+        <% end %>
 
-      <%= if @current_tab == "password" do %>
-        <div>
+        <%= if @current_tab == "password" do %>
+          <h2>Change your password</h2>
           <.simple_form
             for={@password_form}
             id="password_form"
@@ -85,12 +88,6 @@ defmodule VozioWeb.UserSettingsLive do
             phx-submit="update_password"
             phx-trigger-action={@trigger_submit}
           >
-            <input
-              name={@password_form[:email].name}
-              type="hidden"
-              id="hidden_user_email"
-              value={@current_email}
-            />
             <.input field={@password_form[:password]} type="password" label="New password" required />
             <.input
               field={@password_form[:password_confirmation]}
@@ -106,12 +103,18 @@ defmodule VozioWeb.UserSettingsLive do
               value={@current_password}
               required
             />
+            <input
+              name={@password_form[:email].name}
+              type="hidden"
+              id="hidden_user_email"
+              value={@current_email}
+            />
             <:actions>
               <.button phx-disable-with="Changing...">Change Password</.button>
             </:actions>
           </.simple_form>
-        </div>
-      <% end %>
+        <% end %>
+      </div>
     </div>
     """
   end
