@@ -4,71 +4,114 @@ defmodule VozioWeb.UserSettingsLive do
   alias Vozio.Accounts
 
   def render(assigns) do
+    tabs = [
+      %{
+        title: "Information",
+        key: "info",
+        navigate: ~p"/users/settings?tab=info"
+      },
+      %{
+        title: "Email",
+        key: "email",
+        navigate: ~p"/users/settings?tab=email"
+      },
+      %{
+        title: "Password",
+        key: "password",
+        navigate: ~p"/users/settings?tab=password"
+      }
+    ]
+
+    assigns = assign(assigns, :tabs, tabs)
+
     ~H"""
     <.header class="text-center">
       Account Settings
       <:subtitle>Manage your account email address and password settings</:subtitle>
     </.header>
 
+    <div class="mb-8">
+      <nav class="flex space-x-4" aria-label="Settings tabs">
+        <.link
+          :for={tab <- @tabs}
+          navigate={tab.navigate}
+          class={[
+            "px-3 py-2 rounded-md text-zinc-500 hover:text-zinc-900",
+            @current_tab == tab.key && "bg-zinc-100 text-zinc-900"
+          ]}
+        >
+          {tab.title}
+        </.link>
+      </nav>
+    </div>
+
     <div class="space-y-12 divide-y">
-      <div>
-        <.simple_form
-          for={@email_form}
-          id="email_form"
-          phx-submit="update_email"
-          phx-change="validate_email"
-        >
-          <.input field={@email_form[:email]} type="email" label="Email" required />
-          <.input
-            field={@email_form[:current_password]}
-            name="current_password"
-            id="current_password_for_email"
-            type="password"
-            label="Current password"
-            value={@email_form_current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">Change Email</.button>
-          </:actions>
-        </.simple_form>
-      </div>
-      <div>
-        <.simple_form
-          for={@password_form}
-          id="password_form"
-          action={~p"/users/log_in?_action=password_updated"}
-          method="post"
-          phx-change="validate_password"
-          phx-submit="update_password"
-          phx-trigger-action={@trigger_submit}
-        >
-          <input
-            name={@password_form[:email].name}
-            type="hidden"
-            id="hidden_user_email"
-            value={@current_email}
-          />
-          <.input field={@password_form[:password]} type="password" label="New password" required />
-          <.input
-            field={@password_form[:password_confirmation]}
-            type="password"
-            label="Confirm new password"
-          />
-          <.input
-            field={@password_form[:current_password]}
-            name="current_password"
-            type="password"
-            label="Current password"
-            id="current_password_for_password"
-            value={@current_password}
-            required
-          />
-          <:actions>
-            <.button phx-disable-with="Changing...">Change Password</.button>
-          </:actions>
-        </.simple_form>
-      </div>
+      <%= if @current_tab == "info" do %>
+        info
+      <% end %>
+      <%= if @current_tab == "email" do %>
+        <div>
+          <.simple_form
+            for={@email_form}
+            id="email_form"
+            phx-submit="update_email"
+            phx-change="validate_email"
+          >
+            <.input field={@email_form[:email]} type="email" label="Email" required />
+            <.input
+              field={@email_form[:current_password]}
+              name="current_password"
+              id="current_password_for_email"
+              type="password"
+              label="Current password"
+              value={@email_form_current_password}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">Change Email</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+      <% end %>
+
+      <%= if @current_tab == "password" do %>
+        <div>
+          <.simple_form
+            for={@password_form}
+            id="password_form"
+            action={~p"/users/log_in?_action=password_updated"}
+            method="post"
+            phx-change="validate_password"
+            phx-submit="update_password"
+            phx-trigger-action={@trigger_submit}
+          >
+            <input
+              name={@password_form[:email].name}
+              type="hidden"
+              id="hidden_user_email"
+              value={@current_email}
+            />
+            <.input field={@password_form[:password]} type="password" label="New password" required />
+            <.input
+              field={@password_form[:password_confirmation]}
+              type="password"
+              label="Confirm new password"
+            />
+            <.input
+              field={@password_form[:current_password]}
+              name="current_password"
+              type="password"
+              label="Current password"
+              id="current_password_for_password"
+              value={@current_password}
+              required
+            />
+            <:actions>
+              <.button phx-disable-with="Changing...">Change Password</.button>
+            </:actions>
+          </.simple_form>
+        </div>
+      <% end %>
     </div>
     """
   end
@@ -86,7 +129,7 @@ defmodule VozioWeb.UserSettingsLive do
     {:ok, push_navigate(socket, to: ~p"/users/settings")}
   end
 
-  def mount(_params, _session, socket) do
+  def mount(params, _session, socket) do
     user = socket.assigns.current_user
     email_changeset = Accounts.change_user_email(user)
     password_changeset = Accounts.change_user_password(user)
@@ -99,6 +142,7 @@ defmodule VozioWeb.UserSettingsLive do
       |> assign(:email_form, to_form(email_changeset))
       |> assign(:password_form, to_form(password_changeset))
       |> assign(:trigger_submit, false)
+      |> assign(:current_tab, Map.get(params, "tab", "info"))
 
     {:ok, socket}
   end
