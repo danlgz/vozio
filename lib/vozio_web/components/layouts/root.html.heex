@@ -12,38 +12,39 @@
     </script>
   </head>
   <body class="bg-vozio-bacground-light dark:bg-vozio-background-dark">
-    <ul class="relative z-10 flex items-center gap-4 px-4 py-6 sm:px-6 lg:px-8 justify-end max-w-screen-xl mx-auto">
-      <%= if @current_user do %>
-        <li class="text-[0.8125rem] leading-4">
-          {@current_user.username}
-        </li>
-        <li>
-          <.link href={~p"/users/settings"} class="text-[0.8125rem] leading-4 font-semibold">
-            Settings
-          </.link>
-        </li>
-        <li>
-          <.link
-            href={~p"/users/log_out"}
-            method="delete"
-            class="text-[0.8125rem] leading-4 font-semibold"
-          >
-            Log out
-          </.link>
-        </li>
-      <% else %>
-        <li>
-          <.link href={~p"/users/register"} class="text-[0.8125rem] leading-4 font-semibold">
-            Register
-          </.link>
-        </li>
-        <li>
-          <.link href={~p"/users/log_in"} class="text-[0.8125rem] leading-4 font-semibold">
-            Log in
-          </.link>
-        </li>
-      <% end %>
-    </ul>
+    <div class="flex justify-between max-w-screen-xl mx-auto px-4 py-6">
+      <.link href={if @current_user, do: ~p"/lobby", else: "/"} class="hover:no-underline">
+        <.logo size="sm" />
+      </.link>
+      <ul class="flex items-center gap-4 justify-end">
+        <%= if @current_user do %>
+          <li class="leading-4">
+            {@current_user.username}
+          </li>
+          <li>
+            <.link href={~p"/users/settings"} class="leading-4 font-semibold">
+              Settings
+            </.link>
+          </li>
+          <li>
+            <.link href={~p"/users/log_out"} method="delete" class="leading-4 font-semibold">
+              Log out
+            </.link>
+          </li>
+        <% else %>
+          <li>
+            <.link href={~p"/users/register"} class="leading-4 font-semibold">
+              Register
+            </.link>
+          </li>
+          <li>
+            <.link href={~p"/users/log_in"} class="leading-4 font-semibold">
+              Log in
+            </.link>
+          </li>
+        <% end %>
+      </ul>
+    </div>
     {@inner_content}
   </body>
 </html>
