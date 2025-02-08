@@ -31,8 +31,12 @@ defmodule VozioWeb.RoomLobbyLive do
       </div>
 
       <div class="flex flex-col items-end">
-        <.link>
-          Join <.icon name="hero-arrow-up-right" class="h-3 w-3" />
+        <.link class="group">
+          Join
+          <.icon
+            name="hero-arrow-right"
+            class="h-3 w-3 group-hover:translate-x-1 transition duration-200"
+          />
         </.link>
         <span class="text-xs">Last join: 3m ago</span>
       </div>

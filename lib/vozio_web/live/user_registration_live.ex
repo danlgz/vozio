@@ -6,8 +6,12 @@ defmodule VozioWeb.UserRegistrationLive do
 
   def render(assigns) do
     ~H"""
-    <div class="mx-auto max-w-sm">
-      <.header class="text-center">
+    <div class={[
+      "mx-auto max-w-md p-6 rounded-lg mt-20",
+      "bg-vozio-surface-light dark:bg-vozio-surface-dark",
+      "border border-vozio-border-light dark:border-vozio-border-dark"
+    ]}>
+      <.header class="text-center mb-8">
         Register for an account
         <:subtitle>
           Already registered?

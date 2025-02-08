@@ -24,12 +24,12 @@
                 {@current_user.username}
               </:trigger>
               <:content>
-                <div class="flex flex-col gap-2 py-2 px-3">
-                  <.link href={~p"/users/settings"} class="leading-4 font-semibold">
+                <div class="flex flex-col items-center gap-2 py-2 px-3">
+                  <.link href={~p"/users/settings"}>
                     Settings
                   </.link>
 
-                  <.link href={~p"/users/log_out"} method="delete" class="leading-4 font-semibold">
+                  <.link href={~p"/users/log_out"} method="delete">
                     Log out
                   </.link>
                 </div>
@@ -38,12 +38,12 @@
           </li>
         <% else %>
           <li>
-            <.link href={~p"/users/register"} class="leading-4 font-semibold">
+            <.link href={~p"/users/register"}>
               Register
             </.link>
           </li>
           <li>
-            <.link href={~p"/users/log_in"} class="leading-4 font-semibold">
+            <.link href={~p"/users/log_in"}>
               Log in
             </.link>
           </li>
