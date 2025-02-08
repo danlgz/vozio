@@ -65,7 +65,14 @@ defmodule VozioWeb.Router do
 
     live_session :require_authenticated_user,
       on_mount: [{VozioWeb.UserAuth, :ensure_authenticated}] do
+      # room routes
       live "/lobby", RoomLobbyLive, :index
+      live "/room/new", RoomNewLive, :new
+      live "/room/:id", RoomLive, :show
+
+      post "/room/new", RoomController, :new_room
+
+      # user routes
       live "/users/settings", UserSettingsLive, :edit
       live "/users/settings/confirm_email/:token", UserSettingsLive, :confirm_email
     end

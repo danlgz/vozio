@@ -4,8 +4,13 @@ defmodule VozioWeb.RoomLobbyLive do
   def render(assigns) do
     ~H"""
     <h1 class="text-2xl text-center mb-8">Recent rooms</h1>
+    <div class="flex justify-end mb-4 mt-8">
+      <.link_button navigate={~p"/room/new"}>
+        New room
+      </.link_button>
+    </div>
     <div class={[
-      "w-full border flex justify-between items-center p-4 rounded-md",
+      "w-full border flex justify-between items-center py-4 px-6 rounded-md",
       "bg-vozio-surface-light border-vozio-border-light"
     ]}>
       <div>
@@ -45,6 +50,6 @@ defmodule VozioWeb.RoomLobbyLive do
   end
 
   def mount(_params, _session, socket) do
-    {:ok, assign(socket, :message, "Bienvenido a LiveView en Homeeasdfe!")}
+    {:ok, socket}
   end
 end
