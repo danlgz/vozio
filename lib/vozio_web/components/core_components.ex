@@ -19,6 +19,98 @@ defmodule VozioWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   use Gettext, backend: VozioWeb.Gettext
 
+  attr :position, :string,
+    values:
+      ~w(top-left top-center top-right right-top right-middle right-bottom bottom-left bottom-center bottom-right left-top left-middle left-bottom),
+    default: "top-center"
+
+  slot :content
+  slot :trigger
+
+  def popover(assigns) do
+    # @TODO: refactor position and behavior with js
+    assigns =
+      assigns
+      |> assign(
+        :position_class,
+        case assigns.position do
+          "top-" <> _ -> "bottom-full"
+          "bottom-" <> _ -> "top-full"
+          "left-" <> _ -> "right-full"
+          "right-" <> _ -> "left-full"
+        end <>
+          " " <>
+          case assigns.position do
+            "top-left" -> "left-0"
+            "top-center" -> "left-1/2 -translate-x-1/2"
+            "top-right" -> "right-0"
+            "right-top" -> "top-0"
+            "right-middle" -> "top-1/2 -translate-y-1/2"
+            "right-bottom" -> "bottom-0"
+            "bottom-left" -> "left-0"
+            "bottom-center" -> "left-1/2 -translate-x-1/2"
+            "bottom-right" -> "right-0"
+            "left-top" -> "top-0"
+            "left-middle" -> "top-1/2 -translate-y-1/2"
+            "left-bottom" -> "bottom-0"
+          end
+      )
+      |> assign(id: 1..8 |> Enum.map(fn _ -> Enum.random(?a..?z) end) |> List.to_string())
+
+    ~H"""
+    <div class="relative group inline-block">
+      <div anchor={"trigger-#{@id}"}>
+        {render_slot(@trigger)}
+      </div>
+      <div
+        id={@id}
+        class={[
+          "transition-opacity duration-200 rounded-md",
+          "opacity-0 invisible group-hover:opacity-100 group-hover:visible",
+          "absolute w-max px-3 py-1",
+          @position_class,
+          "bg-vozio-surface-light dark:bg-vozio-surface-dark text-vozio-text-light dark:text-vozio-text-dark",
+          "border border-vozio-border-light dark:border-vozio-border-dark"
+        ]}
+      >
+        {render_slot(@content)}
+      </div>
+    </div>
+    """
+  end
+
+  attr :text, :string, required: true
+  attr :position, :string, values: ~w(top right bottom left), default: "top"
+  slot :inner_block, required: true
+
+  def tooltip(assigns) do
+    position_class =
+      case assigns.position do
+        "top" -> "bottom-full mb-1"
+        "bottom" -> "top-full mt-1"
+        "left" -> "right-full mr-1"
+        "right" -> "left-full ml-1"
+        _ -> "top-full mt-2"
+      end
+
+    assigns = assign(assigns, position_class: position_class)
+
+    ~H"""
+    <div class="relative group inline-block">
+      {render_slot(@inner_block)}
+      <div class={[
+        "transition-opacity rounded-md text-xs",
+        "opacity-0 invisible duration-200 group-hover:opacity-100 group-hover:visible",
+        "absolute left-1/2 -translate-x-1/2 #{@position_class} w-max px-3 py-1",
+        "bg-vozio-surface-light dark:bg-vozio-surface-dark text-vozio-text-light dark:text-vozio-text-dark",
+        "border border-vozio-border-light dark:border-vozio-border-dark"
+      ]}>
+        {@text}
+      </div>
+    </div>
+    """
+  end
+
   attr :size, :string, values: ~w(sm md lg), default: "md"
 
   def logo(assigns) do
@@ -463,7 +555,7 @@ defmodule VozioWeb.CoreComponents do
 
   def error(assigns) do
     ~H"""
-    <div class="flex items-center mt-2 flex gap-1 text-sm leading-4 text-vozio-error-light dark:text-vozio-error-dark">
+    <div class="items-center mt-2 flex gap-1 text-sm leading-4 text-vozio-error-light dark:text-vozio-error-dark">
       <.icon name="hero-exclamation-circle-mini" class="h-4 w-4" />
       {render_slot(@inner_block)}
     </div>

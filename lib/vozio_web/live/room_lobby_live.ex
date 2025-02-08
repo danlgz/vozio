@@ -3,7 +3,40 @@ defmodule VozioWeb.RoomLobbyLive do
 
   def render(assigns) do
     ~H"""
-    <h1>{@message}</h1>
+    <h1 class="text-2xl text-center mb-8">Recent rooms</h1>
+    <div class={[
+      "w-full border flex justify-between items-center p-4 rounded-md",
+      "bg-vozio-surface-light border-vozio-border-light"
+    ]}>
+      <div>
+        <.link>
+          <h2 class="text-lg">Shedario Brainstorm</h2>
+        </.link>
+        <div class="flex flex-col gap-1">
+          <span class="text-xs">Online now</span>
+          <div class="flex justify-start gap-1">
+            <.tooltip text="danlgz">
+              <div class="w-5 h-5 rounded-full bg-vozio-primary flex justify-center items-center text-vozio-text-dark text-xs cursor-default">
+                d
+              </div>
+            </.tooltip>
+            <div class="w-5 h-5 rounded-full bg-vozio-color-green-light flex justify-center items-center text-vozio-text-dark text-xs">
+              7
+            </div>
+            <div class="w-5 h-5 rounded-full bg-vozio-color-brown-light flex justify-center items-center text-vozio-text-dark text-xs">
+              c
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col items-end">
+        <.link>
+          Join <.icon name="hero-arrow-up-right" class="h-3 w-3" />
+        </.link>
+        <span class="text-xs">Last join: 3m ago</span>
+      </div>
+    </div>
     """
   end
 

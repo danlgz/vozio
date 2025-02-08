@@ -29,7 +29,7 @@ button {
     font-family: 'Work Sans', Helvetica, sans-serif;
 }
 
-a {
+a:not(.unstyled) {
     @apply hover:underline hover:text-vozio-primary;
 }
 

@@ -19,17 +19,22 @@
       <ul class="flex items-center gap-4 justify-end">
         <%= if @current_user do %>
           <li class="leading-4">
-            {@current_user.username}
-          </li>
-          <li>
-            <.link href={~p"/users/settings"} class="leading-4 font-semibold">
-              Settings
-            </.link>
-          </li>
-          <li>
-            <.link href={~p"/users/log_out"} method="delete" class="leading-4 font-semibold">
-              Log out
-            </.link>
+            <.popover position="bottom-right">
+              <:trigger>
+                {@current_user.username}
+              </:trigger>
+              <:content>
+                <div class="flex flex-col gap-2 py-2 px-3">
+                  <.link href={~p"/users/settings"} class="leading-4 font-semibold">
+                    Settings
+                  </.link>
+
+                  <.link href={~p"/users/log_out"} method="delete" class="leading-4 font-semibold">
+                    Log out
+                  </.link>
+                </div>
+              </:content>
+            </.popover>
           </li>
         <% else %>
           <li>
