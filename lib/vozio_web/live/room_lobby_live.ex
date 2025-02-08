@@ -5,8 +5,8 @@ defmodule VozioWeb.RoomLobbyLive do
 
   def render(assigns) do
     ~H"""
-    <h1 class="text-2xl text-center mb-8">Recent rooms</h1>
-    <div class="flex justify-end mb-4 mt-8">
+    <div class="flex justify-between mb-4 mt-8">
+      <h1 class="text-xl">Recent rooms</h1>
       <.link_button navigate={~p"/room/new"}>
         New room
       </.link_button>
