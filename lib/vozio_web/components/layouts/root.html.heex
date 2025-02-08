@@ -12,11 +12,11 @@
     </script>
   </head>
   <body class="bg-vozio-bacground-light dark:bg-vozio-background-dark">
-    <div class="flex justify-between max-w-screen-xl mx-auto px-4 py-6">
+    <div class="flex relative justify-centeer w-full max-w-screen-xl mx-auto px-8 py-6">
       <.link href={if @current_user, do: ~p"/lobby", else: "/"} class="hover:no-underline">
         <.logo size="sm" />
       </.link>
-      <ul class="flex items-center gap-4 justify-end">
+      <ul class="absolute flex items-center gap-4 justify-end">
         <%= if @current_user do %>
           <li class="leading-4">
             <.popover position="bottom-right">

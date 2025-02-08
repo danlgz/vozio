@@ -19,6 +19,88 @@ defmodule VozioWeb.CoreComponents do
   alias Phoenix.LiveView.JS
   use Gettext, backend: VozioWeb.Gettext
 
+  @colors %{
+    :pink => %{
+      :light => "vozio-color-pink-light",
+      :dark => "vozio-color-pink-dark"
+    },
+    :red => %{
+      :light => "vozio-color-red-light",
+      :dark => "vozio-color-red-dark"
+    },
+    :green => %{
+      :light => "vozio-color-green-light",
+      :dark => "vozio-color-green-dark"
+    },
+    :blue => %{
+      :light => "vozio-color-blue-light",
+      :dark => "vozio-color-blue-dark"
+    },
+    :yellow => %{
+      :light => "vozio-color-yellow-light",
+      :dark => "vozio-color-yellow-dark"
+    },
+    :purple => %{
+      :light => "vozio-color-purple-light",
+      :dark => "vozio-color-purple-dark"
+    },
+    :teal => %{
+      :light => "vozio-color-teal-light",
+      :dark => "vozio-color-teal-dark"
+    },
+    :orange => %{
+      :light => "vozio-color-orange-light",
+      :dark => "vozio-color-orange-dark"
+    },
+    :brown => %{
+      :light => "vozio-color-brown-light",
+      :dark => "vozio-color-brown-dark"
+    }
+  }
+
+  @color_names Enum.map(@colors, fn {name, _} -> Atom.to_string(name) end)
+
+  def get_color_from_gradient_class(color) do
+    color_map = @colors[String.to_atom(color)]
+    "from-#{color_map.light} dark:from-#{color_map.dark}"
+  end
+
+  def get_color_names() do
+    @color_names
+  end
+
+  attr :name, :string, required: true
+  attr :size, :string, values: ~w(sm md lg), default: "md"
+
+  attr :color, :string,
+    values: ~w(pink red green blue yellow purple teal orange brown),
+    default: "pink"
+
+  def initial_avatar(assigns) do
+    assigns =
+      assigns
+      |> assign(initial: String.first(assigns.name))
+      |> assign(
+        size:
+          cond do
+            assigns.size == "sm" -> "w-5 h-5 text-xs"
+            assigns.size == "md" -> "w-7 h-7 text-sm"
+            assigns.size == "lg" -> "w-10 h-10 text-base"
+          end
+      )
+      |> assign(from_color: get_color_from_gradient_class(assigns.color))
+
+    ~H"""
+    <div class={[
+      @size,
+      "rounded-full flex justify-center items-center text-vozio-text-dark cursor-default",
+      "bg-gradient-to-b from-50% to-100% #{@from_color} to-vozio-border-dark dark:to-vozio-surface-dark"
+    ]}>
+      {@initial}
+    </div>
+    """
+  end
+
   attr :position, :string,
     values:
       ~w(top-left top-center top-right right-top right-middle right-bottom bottom-left bottom-center bottom-right left-top left-middle left-bottom),
@@ -344,7 +426,7 @@ defmodule VozioWeb.CoreComponents do
     <button
       type={@type}
       class={[
-        "bg-gradient-to-b from-vozio-primary active:from-vozio-primary-dark from-50% to-vozio-primary-dark active:to-vozio-primary-dark to-100%",
+        "bg-gradient-to-b from-vozio-primary active:from-vozio-primary-dark from-0% to-vozio-primary-dark active:to-vozio-primary-dark to-100%",
         "phx-submit-loading:opacity-75 rounded-md py-3 px-6 hover:opacity-90 transition duration-200",
         "text-sm font-semibold text-vozio-text-dark focus:outline-2 focus:outline-offset-2 focus:outline-primary",
         @class
@@ -364,7 +446,7 @@ defmodule VozioWeb.CoreComponents do
     <.link
       navigate={@navigate}
       class={[
-        "bg-gradient-to-b from-vozio-primary active:from-vozio-primary-dark from-50% to-vozio-primary-dark active:to-vozio-primary-dark to-100%",
+        "bg-gradient-to-b from-vozio-primary active:from-vozio-primary-dark from-0% to-vozio-primary-dark active:to-vozio-primary-dark to-100%",
         "phx-submit-loading:opacity-75 rounded-md py-3 px-6 hover:opacity-90 transition duration-200",
         "text-sm font-semibold text-vozio-text-dark focus:outline-2 focus:outline-offset-2 focus:outline-primary",
         "hover:no-underline hover:text-vozio-text-dark"

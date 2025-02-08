@@ -87,6 +87,9 @@ defmodule VozioWeb do
       import VozioWeb.CoreComponents
       import VozioWeb.Gettext
 
+      # Custom room components
+      import VozioWeb.RoomComponents
+
       # Shortcut for generating JS commands
       alias Phoenix.LiveView.JS
 

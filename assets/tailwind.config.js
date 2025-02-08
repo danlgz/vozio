@@ -15,14 +15,14 @@ module.exports = {
     extend: {
       colors: {
         brand: "#FD4F00",
-        "vozio-primary": "rgb(61, 135, 161)",
-        "vozio-primary-dark": "rgb(48, 103, 129)",
+        "vozio-primary": "rgb(80, 160, 190)",
+        "vozio-primary-dark": "rgb(60, 130, 160)",
         "vozio-bacground-light": "rgb(246, 241, 225)",
         "vozio-background-dark": "rgb(30, 30, 30)",
         "vozio-text-light": "rgb(62, 62, 62)",
         "vozio-text-dark": "rgb(240, 240, 240)",
         "vozio-border-light": "rgb(185, 185, 185)",
-        "vozio-border-dark": "rgb(130, 130, 130)",
+        "vozio-border-dark": "rgb(100, 100, 100)",
         "vozio-surface-light": "rgb(241, 230, 212)",
         "vozio-surface-dark": "rgb(56, 56, 56)",
         "vozio-error-dark": "rgb(212, 106, 106)",
@@ -50,6 +50,12 @@ module.exports = {
       }
     },
   },
+  safelist: [
+    {
+      pattern: /^from-vozio-color-(pink|red|green|blue|yellow|purple|teal|orange|brown)-(light|dark)$/,
+      variants: ['dark']
+    }
+  ],
   plugins: [
     require("@tailwindcss/forms"),
     // Allows prefixing tailwind classes with LiveView classes to add rules
